@@ -1,0 +1,30 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+
+    <meta charset="utf-8" />
+    <title>Сarwash "Sunrise"</title>
+    <link rel="icon" href="/favicon.ico" type="image/ico">
+     <link rel="shortcut icon" href="/favicon.ico" type="image/ico">
+    
+
+    <link href="@Url.Content("Content/Site.css")" rel="stylesheet" type="text/css" />
+   @*<link href="@Url.Content("Content/style.css")" rel="stylesheet" type="text/css" />*@
+</head>
+<body>
+    <div class="header">
+      
+    </div>
+    <div class="menu">
+      <img src="~/Resource/Logo_sunrise.png" height="50" width="70" alt="Sample Photo" />&nbsp;&nbsp;&nbsp;&nbsp;
+        @Html.ActionLink("Main", "GetClients", "Client")&nbsp;&nbsp;
+
+
+    </div>
+
+    @RenderBody()
+    <footer>
+        <p>&copy; @DateTime.Now.Year – carwash "Sunrise"</p>
+    </footer>
+</body>
+</html>

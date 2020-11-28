@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30621.155
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebCarWash", "WebCarWash\WebCarWash.csproj", "{101B8E22-A131-4B15-BCD6-DC8119FF2122}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarWashUnitTest", "CarWashUnitTest\CarWashUnitTest.csproj", "{15A28D93-D6F8-4DEA-8804-197CC44CB266}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{101B8E22-A131-4B15-BCD6-DC8119FF2122}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{101B8E22-A131-4B15-BCD6-DC8119FF2122}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{101B8E22-A131-4B15-BCD6-DC8119FF2122}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{101B8E22-A131-4B15-BCD6-DC8119FF2122}.Release|Any CPU.Build.0 = Release|Any CPU
+		{15A28D93-D6F8-4DEA-8804-197CC44CB266}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{15A28D93-D6F8-4DEA-8804-197CC44CB266}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{15A28D93-D6F8-4DEA-8804-197CC44CB266}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{15A28D93-D6F8-4DEA-8804-197CC44CB266}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {DDC24D9A-99FA-477F-89D6-89421E21848E}
+	EndGlobalSection
+EndGlobal

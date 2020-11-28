@@ -1,0 +1,31 @@
+﻿@model IEnumerable<WebCarWash.Models.Order>
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Orders catalog";
+}
+
+<h2>GetOrder</h2>
+
+<div>
+<table>
+    <tr>
+        <td><p>Number</p></td>
+        <td><p>ServiceDate</p></td>
+        <td><p>Client</p></td>
+        <td><p>Phone</p></td>
+
+    </tr>
+
+    @foreach (var item in Model)
+    {
+<tr>
+    <td><p>@item.OrderId</p></td>
+    <td><p> @item.ServiceDate</p></td>
+    <td><p>@item.Client.Name</p></td>
+    <td><p>@item.Client.Phone</p></td>
+
+</tr>
+    }
+
+</table>
+</div>
