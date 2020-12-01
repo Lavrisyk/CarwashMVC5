@@ -23,5 +23,4 @@ performed in a method of the static class WebCarWash.Models.OrderConvert.ToPdfFi
    <connectionString> <add name = "ServicesContext" providerName = "System.Data.SqlClient" connectionString = "Data Source = (LocalDb) \ MSSQLLocalDB; Home Directory = WebCarWashTest; Integrated Security = SSPI; AttachDBFilename = | DataDirectory | \ WebCarWashTest.mdf "/>
    ```
 -In file Global.asax remove comment on record 
-```Database.SetInitializer(new ServiceDbInitializer()); 
-```
+```Database.SetInitializer(new ServiceDbInitializer()) ```
