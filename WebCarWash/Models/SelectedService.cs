@@ -1,6 +1,6 @@
-﻿using WebCarWash.Models;
+﻿using WebCarWash.Domain.Entities;
 
-namespace WebCarWash.ViewModel
+namespace WebCarWash.Model
 {
     public class SelectedService
     {

@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using WebCarWash.Controllers;
 using System.Web.Mvc;
-using WebCarWash.Models;
 using Moq;
-using WebCarWash.Models.Repository;
 using System;
+using WebCarWash.Domain.Entities;
+using WebCarWash.Domain.Abstract;
 
 namespace CarWashUnitTest.Controllers
 {
@@ -53,10 +53,10 @@ namespace CarWashUnitTest.Controllers
             new Order{OrderId=3,ClientId=3,ServiceDate=DateTime.Now}
         };
 
-       Mock<IServiceCarWash> mock;
+        Mock<IUnitOfWork> mock;
 
          ClientController  contr;
-        //  OrderController orderController;
+    
 
         [TestInitialize()]
         public void MyTestInitialize()
@@ -67,10 +67,10 @@ namespace CarWashUnitTest.Controllers
             var client2= new Client() { Id = 2, Name = "Pit2", Phone = "222-546-236" };
             var clientLst = new List<Client>(){ clientFake,client1, client2};
 
-            mock = new Mock<IServiceCarWash>();
-            mock.Setup(a => a.GetClients()).Returns(clientLst);
+            mock = new Mock<IUnitOfWork>();
+            mock.Setup(m => m.Clients.GetAll()).Returns(clientLst);
            
-            mock.Setup(m => m.GetClient(It.IsAny<int>())).Returns(clientFake);
+            mock.Setup(m => m.Clients.Get(It.IsAny<int>())).Returns(clientFake);
                      
 
             contr = new ClientController(mock.Object);
@@ -101,29 +101,21 @@ namespace CarWashUnitTest.Controllers
         {
            ViewResult result = contr.GetClients() as ViewResult;
             var clients = (IEnumerable<Client>)result.ViewData.Model;
-            Assert.IsInstanceOfType(clients, typeof(IEnumerable<Client>), "Is ClientList");
-            //  Assert.IsTrue(clients is IEnumerable<Client>);
+            Assert.IsInstanceOfType(clients, typeof(IEnumerable<Client>), "Is not ClientList");
+          
         }
 
         #endregion
         //---------------------------------------------------------------------------    
 
-        #region ClientDetails(int? id) test
+        #region ClientDetails(int id) test
 
         [TestMethod]
         public void ClientDetailsViewResultIsNotNull()
         {
             int valitId = 1;
-            //var clientFake = new Client() { Name = "CLIENTTEST", Id = valitId, Phone = "tttttt" };
-            //var clientLst = new List<Client>() { clientFake };
-
-            //var _mock = new Mock<IServiceCarWash>();
-            //_mock.Setup(m => m.GetClients()).Returns(clientLst);
-            //_mock.Setup(m => m.GetClient(It.IsAny<int>())).Returns(clientFake);
-
-            //ClientController contrCl = new ClientController(_mock.Object);
-
-            ViewResult result = contr.ClientDetails(valitId) as ViewResult;
+          
+           ViewResult result = contr.ClientDetails(valitId) as ViewResult;
         
 
           Assert.IsNotNull(result);
@@ -152,7 +144,7 @@ namespace CarWashUnitTest.Controllers
             ViewResult result = contr.ClientCreate() as ViewResult;
 
             Assert.IsNotNull(result);
-            Assert.AreEqual("ClientCreate", result.ViewName);    //.Name.Contains("Pit"));
+            Assert.AreEqual("ClientCreate", result.ViewName);  
         }
 
         [TestMethod]

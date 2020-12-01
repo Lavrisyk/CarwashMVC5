@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // Общие сведения об этой сборке предоставляются следующим набором
 // набора атрибутов. Измените значения этих атрибутов для изменения сведений,
 // связанные со сборкой.
-[assembly: AssemblyTitle("ToPdfConverter")]
+[assembly: AssemblyTitle("WebCarWash.Domain")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("ToPdfConverter")]
+[assembly: AssemblyProduct("WebCarWash.Domain")]
 [assembly: AssemblyCopyright("Copyright ©  2020")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // Следующий GUID служит для идентификации библиотеки типов, если этот проект будет видимым для COM
-[assembly: Guid("e6b17469-2e30-4684-862a-a4b02602e571")]
+[assembly: Guid("43385964-9bda-4f3d-82d3-ebca78d0f9ea")]
 
 // Сведения о версии сборки состоят из указанных ниже четырех значений:
 //

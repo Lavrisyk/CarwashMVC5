@@ -1,37 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Data.Entity;
+﻿using System.Data.Entity;
+using WebCarWash.Domain.Entities;
 
-namespace WebCarWash.Models.Repository
+namespace WebCarWash.Domain.Concrete
 {
-    public class ServicesContext:DbContext
+    public class ServicesContext : DbContext
     {
         public DbSet<Order> Orders { get; set; }
         public DbSet<Client> Clients { get; set; }
         public DbSet<Service> Services { get; set; }
 
-        //public DbSet<OrderServices> OrderInfo { get; set; }
-
-        public ServicesContext()
+       
+        public ServicesContext():base("ServicesContext")
         {
 
-           // Database.SetInitializer(new ServiceDbInitializer());
-            //  Database.SetInitializer<SchoolDBContext>(new CreateDatabaseIfNotExists<SchoolDBContext>());
-            //Database.SetInitializer<MobileContext>(new MyContextInitializer());
-        
         }
 
-
-        public class ServiceDbInitializer : DropCreateDatabaseAlways<ServicesContext>
-        //DropCreateDatabaseAlways<ServicesContext> //DropCreateDatabaseIfModelChanges<ServicesContext>
+          public class ServiceDbInitializer : DropCreateDatabaseIfModelChanges<ServicesContext>   //DropCreateDatabaseAlways<ServicesContext> //DropCreateDatabaseIfModelChanges<ServicesContext>
         {
             protected override void Seed(ServicesContext db)
             {
                 //Servises
-
-
                 var s1 = new Service { ServiceId = 1, Title = "Hand wash without shampoo", Cost = 10.5m };
                 var s2 = new Service { ServiceId = 2, Title = "Hand wash with shampoo", Cost = 15.5m };
                 var s3 = new Service { ServiceId = 3, Title = "Automatic bodywork wash", Cost = 12.0m };
@@ -64,17 +52,10 @@ namespace WebCarWash.Models.Repository
             }
         }
 
-        //public MobileContext() : base("DefaultConnection")
-        //{ }
-
-        //protected override void Dispose(bool disposing)
-        //{
-        //    db.Dispose();
-        //    base.Dispose(disposing);
-        //}
+   
     }
 
-    
+
 
     public class ServiceDbInitializer : DropCreateDatabaseIfModelChanges<ServicesContext>
     //DropCreateDatabaseAlways<ServicesContext> //DropCreateDatabaseIfModelChanges<ServicesContext>
@@ -82,9 +63,9 @@ namespace WebCarWash.Models.Repository
         protected override void Seed(ServicesContext db)
         {
             //Servises
-            
 
-            var s1= new Service { ServiceId = 1, Title = "Hand wash without shampoo", Cost = 10.5m };
+
+            var s1 = new Service { ServiceId = 1, Title = "Hand wash without shampoo", Cost = 10.5m };
             var s2 = new Service { ServiceId = 2, Title = "Hand wash with shampoo", Cost = 15.5m };
             var s3 = new Service { ServiceId = 3, Title = "Automatic bodywork wash", Cost = 12.0m };
             var s4 = new Service { ServiceId = 4, Title = "Engine wash", Cost = 20.5m };
@@ -98,7 +79,7 @@ namespace WebCarWash.Models.Repository
             db.Services.Add(s5);
 
 
-            var cl1= new Client { Id = 1, Name = "Mike", Phone = "123-123-1123" };
+            var cl1 = new Client { Id = 1, Name = "Mike", Phone = "123-123-1123" };
             var cl2 = new Client { Id = 2, Name = "Pit", Phone = "123-987-4478" };
             var cl3 = new Client { Id = 3, Name = "Sam", Phone = "143-222-1267" };
 

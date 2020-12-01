@@ -1,45 +1,57 @@
-﻿using System.Linq;
-using System.Web.Mvc;
-using WebCarWash.Models;
-using WebCarWash.Models.Repository;
-using System;
-using WebCarWash.ViewModel;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Web.Mvc;
+using WebCarWash.Domain.Abstract;
+using WebCarWash.Domain.Concrete;
+using WebCarWash.Domain.Entities;
+
 
 namespace WebCarWash.Controllers
 {
     public class OrderController : Controller
     {
-        private IServiceCarWash repo;  //CarWashRepository repo; 
+        private IUnitOfWork unitOfWork; //CarWashRepository 
+        private IRepository<Order> orderRepo;
+        private IRepository<Client> clientRepo;
+        private IRepository<Service> serviceRepo;
 
         public OrderController()
         {
-            repo = new CarWashRepository();
-
+            unitOfWork = new UnitOfWork();
+            orderRepo = unitOfWork.Orders;
+            clientRepo = unitOfWork.Clients;
+            serviceRepo = unitOfWork.Services;
         }
 
-        public OrderController(IServiceCarWash repository)
+        public OrderController(IUnitOfWork inpunitOfWork)
         {
-            repo = repository;
+            unitOfWork = inpunitOfWork;
+            orderRepo = unitOfWork.Orders;
+            clientRepo = unitOfWork.Clients;
+            serviceRepo = unitOfWork.Services;
+            
+
+
         }
 
         // GET: Order
         public ActionResult GetOrders()
         {
-            var orders = repo.GetOrders(); 
+            var orders =orderRepo.GetAll();
 
 
 
-            return View("GetOrders",orders.ToList());
+            return View("GetOrders", orders.ToList());
         }
-        
+
         [HttpGet]
-        public ActionResult OrderDetails(int? id)
+        public ActionResult OrderDetails(int id)
         {
             if (ModelState.IsValid)
             {
-               var order = repo.GetOrder(id);
+                var order = orderRepo.Get(id);
 
                 if (order == null)
                 {
@@ -52,25 +64,24 @@ namespace WebCarWash.Controllers
         }
 
         [HttpGet]
-        public ActionResult OrderCreate(int? id)
+        public ActionResult OrderCreate(int id)
         {
             if (ModelState.IsValid)
             {
-                var client = repo.GetClient(id);
+                var client =clientRepo.Get(id);
 
-
-                OrderViewModel ovm = new OrderViewModel()
+               var ovm = new WebCarWash.Model.OrderViewModel()
                 {
                     ClientId = client.Id,
                     ClientName = client.Name,
                     OrderDate = DateTime.Now,
-                    State = OrderState.IsForm,
+                  //  State = OrderState.IsForm,
                     Price = 0,
                     Amount = 0
 
                 };
 
-                ovm.Servises = repo.GetServices().Select(s => new SelectListItem
+                ovm.Servises = serviceRepo.GetAll().Select(s => new SelectListItem
                 {
                     Selected = false,
                     Text = s.Title,
@@ -81,23 +92,23 @@ namespace WebCarWash.Controllers
 
             }
 
-              return Content("Order Id not valid");
-  
+            return Content("Order Id not valid");
+
         }
 
         [HttpPost]
-        public ActionResult OrderCreate(OrderViewModel ovm)
+        public ActionResult OrderCreate(WebCarWash.Model.OrderViewModel ovm)
         {
             if (!ModelState.IsValid)
                 return HttpNotFound();
 
             var newServices = new List<Service>();
-            // Список выбранных услуг
+            
+            // services have selected  in the View
             if (ovm.SelectedListServices != null)
             {
-                var allServicse = repo.GetServices();
-
-                //получаем выбранные услуги
+                var allServicse = serviceRepo.GetAll();
+               
                 foreach (var s in ovm.SelectedListServices)
                 {
                     var servise = allServicse.Where(ss => ss.ServiceId.ToString() == s).FirstOrDefault();
@@ -109,58 +120,59 @@ namespace WebCarWash.Controllers
                 return HttpNotFound();
             }
 
-            var client = repo.GetClient(ovm.ClientId);
+            var client = clientRepo.Get(ovm.ClientId);
 
-           var newOrder = new Order()
+            var newOrder = new Order()
             {
-               OrderId=ovm.OrderId,
+                OrderId = ovm.OrderId,
                 Client = client,
                 ClientId = client.Id,
                 ServiceDate = DateTime.Now,
                 State = ovm.State,
-                Services = newServices
-                
+                Services = newServices,
+                Price=newServices.Sum(s=>s.Cost),
+                Amount= newServices.Count
+
             };
 
 
-          int i=  repo.SaveOrder(newOrder);
+            orderRepo.Create(newOrder);
 
-          newOrder = repo.GetOrder(newOrder.OrderId);
-
-            // return  Content("OK");
+           unitOfWork.Save();
+  
             return View("OrderDetails", newOrder);
         }
 
-        public ActionResult OrderUpdate(OrderViewModel ovm)
+        public ActionResult OrderUpdate(Model.OrderViewModel ovm)
         {
             OrderCreate(ovm);
 
             return Content("Update executed");
         }
 
-        public ActionResult OrderEdit(int? id)
+        public ActionResult OrderEdit(int id)
         {
             if (!ModelState.IsValid)
             {
                 return Content("Order not found");
             }
 
-            var order = repo.GetOrder(id);
+            var order =orderRepo.Get(id);
 
 
-            OrderViewModel ovm = new OrderViewModel()
+           var ovm = new Model.OrderViewModel()
             {
-                OrderId= order.OrderId,
+                OrderId = order.OrderId,
                 ClientId = order.Client.Id,
                 ClientName = order.Client.Name,
                 OrderDate = order.ServiceDate,
-                State = order.State,
+                //State = order.State,
                 Price = order.Price,
                 Amount = order.Amount
 
             };
 
-            ovm.Servises = repo.GetServices().Select(s => new SelectListItem
+            ovm.Servises = serviceRepo.GetAll().Select(s => new SelectListItem
             {
                 Selected = false,
                 Text = s.Title,
@@ -169,26 +181,27 @@ namespace WebCarWash.Controllers
 
             ovm.SelectedListServices = order.Services.Select(s => s.ServiceId.ToString()).ToList();
 
-            return View("OrderCreate",ovm);
+            return View("OrderCreate", ovm);
         }
 
 
-        public ActionResult OrderPdf(int? id)
+        public ActionResult OrderPdf(int id)
         {
             if (!ModelState.IsValid)
             {
                 return Content("Order not found");
             }
 
-            var order = repo.GetOrder(id);
-            var pathTemplate = Server.MapPath(@"~/Resource/car_wash.indd");
-            var fileName = order.OrderId + ".PDF"; 
-            var pathToSave= Server.MapPath(@"~/Content/Files/");
+            var order = orderRepo.Get(id);
+                        
+            var pathTemplate = Server.MapPath(@"~/Content/Images/car_wash.indd");
+            var fileName =  "Order.PDF";
+            var pathToSave = Server.MapPath(@"~/Content/Files/");
 
-            if (order.ConvertToPdfFile(pathTemplate, pathToSave, fileName) == true)
+            if (Models.OrderConvert.ToPdfFile(order,pathTemplate, pathToSave, fileName) == true)
                 return File(Path.Combine(pathToSave, fileName), "application/pdf", fileName);
             else
-                return Content("Ошибка при создании файла .PDF");
+                return Content("Error creating file .PDF");
 
         }
     }

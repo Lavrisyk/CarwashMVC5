@@ -1,24 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
-using WebCarWash.Models;
+using WebCarWash.Domain.Entities;
 
-namespace WebCarWash.ViewModel
+namespace WebCarWash.Model
 {
 
-   public class IndexViewModel
-   {
+    public class IndexViewModel
+    {
         //https://progi.pro/kak-vernut-vibrannie-znacheniya-iz-dvuh-listboxes-v-kontroller-mvc-s-pomoshyu-britvi-i-s-9454056
         public IEnumerable<SelectListItem> Servises { get; set; }
         public IEnumerable<SelectListItem> Clients { get; set; }
-      
+
         [Required]
         public int? SelectedClientId { get; set; }
         public List<string> SelectedListServices { get; set; }
-        
+
         public IndexViewModel()
         {
             Servises = new List<SelectListItem>();

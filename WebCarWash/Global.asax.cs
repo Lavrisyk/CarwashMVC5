@@ -1,9 +1,10 @@
-﻿using System;
+﻿using Ninject.Modules;
+using System;
+using System.Data.Entity;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
-using System.Data.Entity;
-using WebCarWash.Models.Repository;
+using WebCarWash.Domain.Concrete;
 
 namespace WebCarWash
 {
@@ -11,22 +12,15 @@ namespace WebCarWash
     {
         protected void Application_Start()
         {
-            try
-            {
-                Database.SetInitializer(new ServiceDbInitializer());
-                Models.Repository.ServicesContext db = new Models.Repository.ServicesContext();
-                db.Database.Initialize(true);
-            }
-            catch(Exception e)
-            {
-  
-                string str = e.Message;
-            }
+           
+              // Database.SetInitializer(new ServiceDbInitializer());
+           
 
             AreaRegistration.RegisterAllAreas();
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+
         }
     }
 }

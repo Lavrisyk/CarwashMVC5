@@ -1,4 +1,4 @@
-﻿@model IEnumerable<WebCarWash.Models.Client>
+﻿@model IEnumerable<WebCarWash.Domain.Entities.Client>
 
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -19,7 +19,7 @@
                 <td></td>
             </tr>
 
-            @foreach (var s in Model)
+            @foreach( WebCarWash.Domain.Entities.Client s in Model)
             {
                 <tr>
                     <td><p>@s.Name</p></td>
@@ -46,10 +46,10 @@
         </table>
  </form>
 
-@helper OrderList(IEnumerable<WebCarWash.Models.Order> orders)
+@helper OrderList(IEnumerable<WebCarWash.Domain.Entities.Order> orders)
 {
     <hr />
-    foreach (WebCarWash.Models.Order b in orders)
+    foreach (WebCarWash.Domain.Entities.Order b in orders)
     {
 
         <p>
@@ -74,10 +74,10 @@
     <hr />
 }
 
-@helper ServiceList(IEnumerable<WebCarWash.Models.Service> services)
+@helper ServiceList(IEnumerable<WebCarWash.Domain.Entities.Service> services)
 {
     <ul>
-        @foreach (WebCarWash.Models.Service s in services)
+        @foreach (WebCarWash.Domain.Entities.Service s in services)
         {
 
             <li>    @s.Title  (@s.Cost$)  </li>
