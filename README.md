@@ -1,5 +1,5 @@
 # CarwashMVC5
-Carwash web project using Asp.net mvc5 allows you to view a list of customers and 
+WebCarWash project using Asp.net mvc5 allows you to view a list of customers and 
 their orders with a list of services provided.
   A completed order can be saved to a PDF file, 
   which is generated based on the InDesign template.
@@ -14,7 +14,7 @@ performed in a method of the static class WebCarWash.Models.OrderConvert.ToPdfFi
 -MOQ
 -InDesignServer
  ```
-# Launch of the project
+# Running Project
 - Download Adobe IndesignServer(V2020) and install. Add reference in the project WebCarWash.
 
 - Open the project in Visual Studio.
